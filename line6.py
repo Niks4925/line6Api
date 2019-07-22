@@ -113,7 +113,7 @@ class api:
         else:
             f = "0"
         
-        r = self.getRequest("customtone/tones?format=json&mytones=1&favorites={}".format(f))
+        r = self.getRequest("customtone/tones?format=json&mytones=1&favorites={0}&midi_id={1}".format(f, self.getDeviceId("amplifi_tt")))
         res = r.json()
         #print(json.dumps(res, indent=4, sort_keys=True))
         
@@ -145,7 +145,16 @@ class api:
         print(r.text.encode("utf8"))
         #print(json.dumps(r.json(), indent=4, sort_keys=True))
           
-
+    def uploadTone(self, toneData):
+        """
+        toneData is l6p json file content serialized
+        To be tested
+        """
+        data = {"token": self.token, "upload": toneData}
+        print(toneData)
+        r = self.session.post(self.API_ENDPOINT + "customtone/tone", data=data)
+        
+        print(json.dumps(r.json(), indent=4, sort_keys=True))
 
     def getUpdates(self, device=""):
         """
